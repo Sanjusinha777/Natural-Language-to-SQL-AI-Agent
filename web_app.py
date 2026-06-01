@@ -12,13 +12,14 @@ DB_USER = "neondb_owner"
 DB_PASSWORD = "npg_vAq3jnVJEph0"
 # =================================================
 
-# Latest GenAI Client Setup - Phir chahe local ho ya cloud, dono jagah sahi chalega
-if "GEMINI_API_KEY" in st.secrets:
-    # Cloud/Production environment ke liye
-    client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
-else:
-    # Local environment ke liye (agar secrets.toml use ho raha ho)
-    client = genai.Client()
+# Latest GenAI Client Setup (Direct Secrets integration)
+try:
+    # Streamlit Cloud ya local secrets.toml dono se utha lega
+    api_key_to_use = st.secrets["GEMINI_API_KEY"]
+    client = genai.Client(api_key=api_key_to_use)
+except Exception as e:
+    st.error("⚠️ API Key not found in Streamlit Secrets! Please check Advanced Settings.")
+    st.stop()
 
 # System Prompt for Multi-Table
 prompt = """
