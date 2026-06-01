@@ -12,8 +12,13 @@ DB_USER = "neondb_owner"
 DB_PASSWORD = "npg_vAq3jnVJEph0"
 # =================================================
 
-# Latest GenAI Client Setup
-client = genai.Client(api_key=GEMINI_API_KEY)
+# Latest GenAI Client Setup - Phir chahe local ho ya cloud, dono jagah sahi chalega
+if "GEMINI_API_KEY" in st.secrets:
+    # Cloud/Production environment ke liye
+    client = genai.Client(api_key=st.secrets["GEMINI_API_KEY"])
+else:
+    # Local environment ke liye (agar secrets.toml use ho raha ho)
+    client = genai.Client()
 
 # System Prompt for Multi-Table
 prompt = """
