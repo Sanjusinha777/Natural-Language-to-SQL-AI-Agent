@@ -4,17 +4,17 @@ import pandas as pd
 from google import genai
 
 # ================= CONFIGURATION =================
-GEMINI_API_KEY = "AQ.Ab8RN6I3g2YrGWGwSGfTtfLSdsmXgGd19QDFhwz94PBXPbuTQg"  # <-- Apni asli Gemini API key yahan dalein
-# Cloud Database Details (Aapki Neon String se extracted)
+# Cloud Database Details
 DB_HOST = "ep-weathered-mountain-aor3k8jf.c-2.ap-southeast-1.aws.neon.tech"
 DB_NAME = "neondb"
 DB_USER = "neondb_owner"
 DB_PASSWORD = "npg_vAq3jnVJEph0"
 # =================================================
 
-# Latest GenAI Client Setup (Direct Secrets integration)
+# Direct Secrets Integration for Gemini Client
 try:
-    # Streamlit Cloud ya local secrets.toml dono se utha lega
+    # Streamlit Cloud par Advanced Settings wale secrets se key uthayega
+    # Local machine par .streamlit/secrets.toml se uthayega
     api_key_to_use = st.secrets["GEMINI_API_KEY"]
     client = genai.Client(api_key=api_key_to_use)
 except Exception as e:
@@ -50,6 +50,7 @@ CRITICAL: Your output must only be the raw SQL query. Do not include markdown bl
 """
 
 def get_gemini_response(question, system_prompt):
+    # Model name explicitly passed
     response = client.models.generate_content(
         model='gemini-2.5-flash',
         contents=question,
@@ -58,7 +59,6 @@ def get_gemini_response(question, system_prompt):
     return response.text.strip()
 
 def read_sql_query(sql):
-    # Cloud Database se secure connection
     conn = psycopg2.connect(
         host=DB_HOST,
         database=DB_NAME,
