@@ -19,20 +19,24 @@ If the user asks about sales or orders, join ORDERS and CUSTOMERS on customer_id
 Return only the raw SQL query, no markdown, no extra text.
 """
 
+from google import genai
+import os
+
 def get_gemini_response(question, system_prompt):
-    api_key = st.secrets["GEMINI_API_KEY"] 
+    # Secrets se key lein
+    api_key = st.secrets["GEMINI_API_KEY"]
+    
+    # Client ko environment variable ya explicit key se initialize karein
     client = genai.Client(api_key=api_key)
     
-    try:
-        response = client.models.generate_content(
-            model='gemini-1.5-flash',
-            contents=question,
-            config={'system_instruction': system_prompt}
-        )
-        return response.text.strip()
-    except Exception as e:
-        st.error(f"Full Error Details: {e}") # Yeh aapko actual error dikha dega
-        return "Error in generating response"
+    response = client.models.generate_content(
+        model='gemini-1.5-flash',
+        contents=question,
+        config={
+            'system_instruction': system_prompt
+        }
+    )
+    return response.text.strip()
 
 
 def read_sql_query(sql):
