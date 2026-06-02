@@ -19,12 +19,17 @@ If the user asks about sales or orders, join ORDERS and CUSTOMERS on customer_id
 Return only the raw SQL query, no markdown, no extra text.
 """
 
-# Purana code hatayein aur ise use karein:
-response = client.models.generate_content(
-    model='gemini-2.0-flash',  # <--- '2.5' ki jagah '2.0' karein
-    contents=question,
-    config={'system_instruction': system_prompt}
-)
+def get_gemini_response(question, system_prompt):
+    # Streamlit Cloud se secrets uthayega
+    api_key = st.secrets["AQ.Ab8RN6JpXnQRmdoBv4JB4FLvJXr6aPu-JYsFLrgywpY0WPEQnA"] 
+    client = genai.Client(api_key=api_key)
+    
+    response = client.models.generate_content(
+        model='gemini-2.0-flash',
+        contents=question,
+        config={'system_instruction': system_prompt}
+    )
+    return response.text.strip()
 
 def read_sql_query(sql):
     conn = psycopg2.connect(DATABASE_URL)
