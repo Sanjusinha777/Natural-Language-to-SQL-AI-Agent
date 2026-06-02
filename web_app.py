@@ -21,7 +21,7 @@ Return only the raw SQL query, no markdown, no extra text.
 
 def get_gemini_response(question, system_prompt):
     # Streamlit Cloud se secrets uthayega
-    api_key = st.secrets["AQ.Ab8RN6JpXnQRmdoBv4JB4FLvJXr6aPu-JYsFLrgywpY0WPEQnA"] 
+    api_key = st.secrets["GEMINI_API_KEY"]
     client = genai.Client(api_key=api_key)
     
     response = client.models.generate_content(
