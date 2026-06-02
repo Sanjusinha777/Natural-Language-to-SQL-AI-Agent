@@ -1,4 +1,6 @@
-google-genai
+pandas
+sqlalchemy
 psycopg2-binary
 streamlit
-pandas
+google-genai
+python-dotenv
