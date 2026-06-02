@@ -19,16 +19,19 @@ If the user asks about sales or orders, join ORDERS and CUSTOMERS on customer_id
 Return only the raw SQL query, no markdown, no extra text.
 """
 
-
 def get_gemini_response(question, system_prompt):
-    # 1. API Key set karo
     api_key = st.secrets["GEMINI_API_KEY"]
+    
+    # Configure calling
     genai.configure(api_key=api_key)
     
-    # 2. Model call karo
-    model = genai.GenerativeModel('gemini-1.5-flash', 
-                                  system_instruction=system_prompt)
-    response = model.generate_content(question)
+    # Model initialization
+    model = genai.GenerativeModel('gemini-1.5-flash')
+    
+    # Chat session with system instruction
+    chat = model.start_chat(history=[])
+    response = chat.send_message(f"{system_prompt}\n\nQuestion: {question}")
+    
     return response.text.strip()
 
 # Baki sab wahi purana code...
