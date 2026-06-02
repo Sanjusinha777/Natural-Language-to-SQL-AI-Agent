@@ -22,7 +22,7 @@ Return only the raw SQL query, no markdown, no extra text.
 
 def get_gemini_response(question, system_prompt):
     # 1. API Key set karo
-    api_key = st.secrets["AQ.Ab8RN6JpXnQRmdoBv4JB4FLvJXr6aPu-JYsFLrgywpY0WPEQnA"]
+    api_key = st.secrets["GEMINI_API_KEY"]
     genai.configure(api_key=api_key)
     
     # 2. Model call karo
