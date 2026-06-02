@@ -20,16 +20,20 @@ Return only the raw SQL query, no markdown, no extra text.
 """
 
 def get_gemini_response(question, system_prompt):
-    # Streamlit Cloud se secrets uthayega
-    api_key = st.secrets["GEMINI_API_KEY"]
+    api_key = st.secrets["GEMINI_API_KEY"] 
     client = genai.Client(api_key=api_key)
     
-    response = client.models.generate_content(
-        model='gemini-2.0-flash',
-        contents=question,
-        config={'system_instruction': system_prompt}
-    )
-    return response.text.strip()
+    try:
+        response = client.models.generate_content(
+            model='gemini-1.5-flash',
+            contents=question,
+            config={'system_instruction': system_prompt}
+        )
+        return response.text.strip()
+    except Exception as e:
+        st.error(f"Full Error Details: {e}") # Yeh aapko actual error dikha dega
+        return "Error in generating response"
+
 
 def read_sql_query(sql):
     conn = psycopg2.connect(DATABASE_URL)
